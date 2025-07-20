@@ -1,4 +1,5 @@
 "use client";
+
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
@@ -17,7 +18,7 @@ export const SidebarItem = ({
 
   return (
     <div
-      className={`flex ${isActive ? "text-[#6a51a6]" : "text-slate-500"} cursor=pinter p-2  pl-8`}
+      className={`flex items-center ${isActive ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer p-2  pl-8`}
       onClick={() => router.push(href)}
     >
       <div className="pr-2">{icon}</div>
