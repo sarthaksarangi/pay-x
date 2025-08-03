@@ -2,40 +2,51 @@ import express from "express";
 import db from "@repo/db/client";
 const app = express();
 const PORT = 3003;
+app.use(express.json());
 
 app.post("/hdfc-webhook", async (req, res) => {
-  // Handle HDFC webhook logic here
-  const paymentInfo = {
-    token: req.body.token,
-    userId: req.body.user_identifier,
-    amount: req.body.amount,
-  };
-
-  //Update the balance in the database
   try {
-    await db.$transaction([
-      db.balance.update({
+    // Handle HDFC webhook logic here
+    console.log(req.body);
+    const paymentInformation: {
+      token: string;
+      userId: string;
+      amount: string;
+    } = {
+      token: req.body.token,
+      userId: req.body.user_identifier,
+      amount: req.body.amount,
+    };
+
+    //Update the balance in the database
+
+    const data = await db.$transaction([
+      db.balance.updateMany({
         where: {
-          userId: paymentInfo.userId,
+          userId: Number(paymentInformation.userId),
         },
         data: {
           amount: {
-            increment: paymentInfo.amount,
+            increment: Number(paymentInformation.amount),
+          },
+          locked: {
+            decrement: Number(paymentInformation.amount),
           },
         },
       }),
 
-      db.onRampTransaction.update({
+      db.onRampTransaction.updateMany({
         where: {
-          token: paymentInfo.token,
+          token: paymentInformation.token,
         },
         data: {
           status: "Success",
-          amount: paymentInfo.amount,
+          amount: Number(paymentInformation.amount),
         },
       }),
     ]);
     res.json({
+      data,
       message: "Captured",
     });
   } catch (error) {

@@ -1,13 +1,16 @@
 {
-    "name": "@repo/db",
-    "version": "0.0.0",
-    "dependencies": {
-        "@prisma/client": "^6.11.1"
-    },
-    "devDependencies": {
-        "prisma": "^6.11.1"
-    },
-    "exports": {
-        "./client": "./index.ts"
-    }
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "dependencies": {
+    "@prisma/client": "^6.11.1"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "devDependencies": {
+    "prisma": "^6.11.1"
+  },
+  "exports": {
+    "./client": "./index.ts"
+  }
 }
