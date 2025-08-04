@@ -10,34 +10,30 @@ export default function SendCard() {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState<number>(0);
   return (
-    <div className="h-[90vh]">
-      <Center>
-        <Card title="P2P Transfer">
-          <div className="min-w-72 pt-2">
-            <TextInput
-              type="tel"
-              label="Number"
-              placeholder="Enter the Phone Number"
-              onChange={(num) => setNumber(num)}
-            />
-            <TextInput
-              type="number"
-              label="Amount"
-              placeholder="Enter the Amount"
-              onChange={(amount) => setAmount(Number(amount))}
-            />
-            <div className="pt-4 flex justify-center">
-              <Button
-                onClick={async () => {
-                  await p2pTransfer(number, Number(amount) * 100);
-                }}
-              >
-                Send
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </Center>
-    </div>
+    <Card title="P2P Transfer">
+      <div className="min-w-72 pt-2">
+        <TextInput
+          type="tel"
+          label="Number"
+          placeholder="Enter the Phone Number"
+          onChange={(num) => setNumber(num)}
+        />
+        <TextInput
+          type="number"
+          label="Amount"
+          placeholder="Enter the Amount"
+          onChange={(amount) => setAmount(Number(amount))}
+        />
+        <div className="pt-4 flex justify-center">
+          <Button
+            onClick={async () => {
+              await p2pTransfer(number, Number(amount) * 100);
+            }}
+          >
+            Send
+          </Button>
+        </div>
+      </div>
+    </Card>
   );
 }

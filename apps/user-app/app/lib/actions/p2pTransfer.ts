@@ -6,8 +6,8 @@ import prisma from "@repo/db/client";
 
 export default async function p2pTransfer(to: string, amount: number) {
   const session = await getServerSession(authOptions);
-  const from = session.user.id;
-  if (!from) {
+  const fromUserId = session.user.id;
+  if (!fromUserId) {
     return {
       message: "Error while sending.",
     };
@@ -24,23 +24,40 @@ export default async function p2pTransfer(to: string, amount: number) {
     };
   }
 
-  await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId"  = ${Number(fromUserId)} FOR UPDATE`;
     const fromBalance = await tx.balance.findUnique({
       where: {
-        userId: Number(from),
+        userId: Number(fromUserId),
       },
     });
 
     if (!fromBalance || fromBalance.amount < amount) {
       throw new Error("Insufficient funds");
     }
-    await tx.balance.update({
-      where: { userId: Number(from) },
+    const updatedFrom = await tx.balance.update({
+      where: { userId: Number(fromUserId) },
       data: { amount: { decrement: amount } },
     });
-    await tx.balance.update({
+
+    const updatedTo = await tx.balance.update({
       where: { userId: toUser.id },
       data: { amount: { increment: amount } },
     });
+
+    const txn = await tx.p2pTransfer.create({
+      data: {
+        amount: amount,
+        timestamp: new Date(),
+        toUserId: updatedTo.userId,
+        fromUserId: updatedFrom.userId,
+      },
+    });
+    return {
+      from: updatedFrom,
+      to: updatedTo,
+      txn,
+    };
   });
+  console.log("result", result);
 }
