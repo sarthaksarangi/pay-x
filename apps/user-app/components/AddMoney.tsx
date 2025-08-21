@@ -33,7 +33,6 @@ const AddMoney = () => {
           label="Amount"
           placeholder="Amount"
           onChange={(amount) => {
-            console.log("amount1", amount);
             setAmount(Number(amount));
             console.log(amount);
           }}
