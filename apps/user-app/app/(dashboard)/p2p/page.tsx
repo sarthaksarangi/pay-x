@@ -2,8 +2,7 @@ import prisma from "@repo/db/client";
 import SendCard from "../../../components/SendCard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
-import P2pTransactions from "../../../components/p2pTransactions";
-import { Center } from "@repo/ui/center";
+import P2pTransactions from "../../../components/P2pTransactions";
 
 async function getTransactions() {
   const session = await getServerSession(authOptions);
