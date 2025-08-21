@@ -34,7 +34,7 @@ const AddMoney = () => {
           placeholder="Amount"
           onChange={(amount) => {
             setAmount(Number(amount));
-            console.log(amount);
+            console.log(amount, "Huge amount");
           }}
         />
       </div>
