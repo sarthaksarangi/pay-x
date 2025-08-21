@@ -58,6 +58,7 @@ const AddMoney = () => {
           onClick={async () => {
             await createOnRampTransaction(amount, provider);
             // window.location.href = redirectURL || "";
+            //
           }}
         >
           Add Money
