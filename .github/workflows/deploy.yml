@@ -28,3 +28,21 @@ jobs:
 
       - name: Verify Pushed image
         run: docker pull sarthaksarangi/pay-x-user-app:latest
+      - name: Push to EC2 machine
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          key: ${{secrets.SSH_KEY}}
+          script: |
+            sudo docker pull sarthaksarangi/pay-x-user-app:latest
+            sudo docker stop web-app || true
+            sudo docker rm web-app || true
+            sudo docker run -d \
+              --name web-app \
+              --restart always \
+              -p 3005:3000 \
+              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              sarthaksarangi/pay-x-user-app:latest
+            # optional: clean up old images/layers
+            sudo docker system prune -af
