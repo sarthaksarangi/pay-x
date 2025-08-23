@@ -10,16 +10,14 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         phone: {
-          label: "Phone number",
+          label: "Phone Number",
           type: "text",
-          placeholder: "1231231231",
+          placeholder: "XXXXXXXXXX",
         },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials) return null; // type-safe guard
-
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
 
         const existingUser = await db.user.findFirst({
           where: { number: credentials.phone },
@@ -42,6 +40,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          const hashedPassword = await bcrypt.hash(credentials.password, 10);
           const user = await db.user.create({
             data: {
               number: credentials.phone,
@@ -61,7 +60,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  secret: process.env.JWT_SECRET || "secret",
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ token, session }) {
       if (session.user) {
