@@ -7,6 +7,7 @@ import { Select } from "@repo/ui/select";
 import { useState } from "react";
 import { Button } from "@repo/ui/button";
 import { createOnRampTransaction } from "../app/lib/actions/createOnRampTransaction";
+import { useRouter } from "next/navigation";
 
 const SUPPORTED_BANKS = [
   {
@@ -25,6 +26,7 @@ const AddMoney = () => {
   const [redirectURL, setRedirectURL] = useState(
     SUPPORTED_BANKS[0]?.redirectUrl
   );
+  const router = useRouter();
 
   return (
     <Card title="Add Money">
@@ -33,9 +35,7 @@ const AddMoney = () => {
           label="Amount"
           placeholder="Amount"
           onChange={(amount) => {
-            console.log("amount1", amount);
             setAmount(Number(amount));
-            console.log(amount);
           }}
         />
       </div>
@@ -57,8 +57,10 @@ const AddMoney = () => {
       <div className="flex justify-center pt-4">
         <Button
           onClick={async () => {
-            await createOnRampTransaction(amount, provider);
-            // window.location.href = redirectURL || "";
+            const res = await createOnRampTransaction(amount, provider);
+            if (res.message === "Success") {
+              router.refresh(); // 🔄 re-fetch server components
+            }
           }}
         >
           Add Money
