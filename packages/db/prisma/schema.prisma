@@ -11,12 +11,13 @@ model User {
   id          Int      @id @default(autoincrement())
   email       String?  @unique
   name        String? 
-  number      String  @unique
+  number      String?  @unique
   password    String
   OnRampTransaction OnRampTransaction[]
-  Balance           Balance[]
+  balance           Balance?
   sentTransfers     p2pTransfer[] @relation(name: "FromUserRelation")
   fromTransfers     p2pTransfer[] @relation(name: "ToUserRelation")
+  authType AuthType? 
 }
 
 model Merchant {
@@ -40,7 +41,7 @@ model OnRampTransaction{
 model Balance {
   id     Int  @id @default(autoincrement())
   userId Int  @unique
-  amount Int
+  amount Int @default(0)
   locked Int
   user   User @relation(fields: [userId], references: [id])
 }
@@ -57,6 +58,7 @@ model p2pTransfer {
 enum AuthType {
   Google
   Github
+  Email
 }
 
 enum OnRampStatus {

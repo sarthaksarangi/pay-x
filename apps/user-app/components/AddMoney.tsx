@@ -56,6 +56,7 @@ const AddMoney = () => {
       />
       <div className="flex justify-center pt-4">
         <Button
+          disabled={false}
           onClick={async () => {
             const res = await createOnRampTransaction(amount, provider);
             if (res.message === "Success") {

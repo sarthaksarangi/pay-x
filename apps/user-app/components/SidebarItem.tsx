@@ -1,5 +1,3 @@
-"use client";
-
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React from "react";
@@ -19,15 +17,14 @@ export const SidebarItem = ({
   return (
     <Link
       href={href}
-      className={`flex items-center ${
-        isActive ? "text-[#6a51a6]" : "text-slate-500"
-      } cursor-pointer p-2 pl-8`}
+      className={`
+        flex items-center p-3 mx-2 rounded-xl transition-all duration-200 group hover:bg-slate-50
+        ${isActive ? "text-[#6a51a6]" : "text-slate-500 hover:text-slate-700"}
+      `}
     >
-      <div className="pr-2">{icon}</div>
+      <div className="pr-3">{icon}</div>
       <div
-        className={`font-bold ${
-          isActive ? "text-[#6a51a6]" : "text-slate-500"
-        }`}
+        className={`font-bold text-sm ${isActive ? "text-[#6a51a6]" : "text-slate-500 group-hover:text-slate-700"}`}
       >
         {title}
       </div>

@@ -18,21 +18,23 @@ const OnRampTransactions = ({
     );
   }
   return (
-    <Card title="Recent Transactions">
-      {transactions.map((transaction) => (
-        <div className="flex justify-between">
-          <div>
-            <div className="text-sm">Received INR</div>
-            <div className="text-slate-600 text-xs">
-              {transaction.time.toDateString()}
+    <div className="mb-4">
+      <Card title="Recent Transactions">
+        {transactions.map((transaction) => (
+          <div className="flex justify-between">
+            <div>
+              <div className="text-sm">Received INR</div>
+              <div className="text-slate-600 text-xs">
+                {transaction.time.toDateString()}
+              </div>
+            </div>
+            <div className="flex flex-col justify-center">
+              + Rs {transaction.amount / 100}
             </div>
           </div>
-          <div className="flex flex-col justify-center">
-            + Rs {transaction.amount / 100}
-          </div>
-        </div>
-      ))}
-    </Card>
+        ))}
+      </Card>
+    </div>
   );
 };
 

@@ -14,26 +14,45 @@ export async function createOnRampTransaction(
       message: "Unauthenticated Request",
     };
   }
+
   const token = (Math.random() * 1000).toString();
 
-  const transaction = await prisma.onRampTransaction.create({
-    data: {
-      userId: Number(session.user.id),
-      status: "Processing",
-      startTime: new Date(),
-      token: token,
-      amount: amount * 100,
-      provider,
-    },
+  const transaction = await prisma.$transaction(async (tx) => {
+    const txnEntry = await tx.onRampTransaction.create({
+      data: {
+        userId: Number(session.user.id),
+        status: "Processing",
+        startTime: new Date(),
+        token: token,
+        amount: amount * 100,
+        provider,
+      },
+    });
+
+    const lockedBalUpdate = await tx.balance.update({
+      where: {
+        userId: Number(session.user.id),
+      },
+      data: {
+        locked: Number(amount) * 100,
+      },
+    });
+    console.log(txnEntry, lockedBalUpdate);
+
+    if (txnEntry && lockedBalUpdate) {
+      return {
+        txnEntry,
+        lockedBalUpdate,
+      };
+    }
   });
 
   if (transaction) {
     return {
       message: "Success",
     };
-  }
-  console.log(transaction);
-  return {
-    error: "Error while processing transaction.",
-  };
+  } else
+    return {
+      error: "Error while processing transaction.",
+    };
 }
