@@ -44,7 +44,7 @@ export default async function Page() {
   const transactions = await getTransactions();
 
   return (
-    <div className="min-h-screen w-full flex justify-center items-start py-12 px-4">
+    <div className="w-full flex justify-center items-start ">
       <div className="w-full max-w-md space-y-6">
         <SendCard />
 
