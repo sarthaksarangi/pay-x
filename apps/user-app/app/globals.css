@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile / safe area adjustments and prevent horizontal scroll */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden; /* avoid accidental horizontal scroll on small devices */
+}
+
+/* Apply safe area padding to top/bottom */
+body {
+  padding-top: calc(var(--safe-top));
+  padding-bottom: calc(var(--safe-bottom));
+}
+
+/* Optional helper: ensure full-width images don't overflow */
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}

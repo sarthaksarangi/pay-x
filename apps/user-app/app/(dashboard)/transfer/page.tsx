@@ -4,6 +4,7 @@ import { BalanceCard } from "../../../components/BalanceCard";
 import { authOptions } from "../../lib/auth";
 import prisma from "@repo/db/client";
 import OnRampTransactions from "../../../components/OnRampTransactions";
+import { Heading } from "@repo/ui/heading";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -42,9 +43,8 @@ export default async function () {
   const transactions = await getOnRampTransactions();
   return (
     <div className="w-full">
-      <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
-        Transfer
-      </div>
+      <Heading heading="Transfer" />
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mr-4">
         <div>
           <AddMoney />

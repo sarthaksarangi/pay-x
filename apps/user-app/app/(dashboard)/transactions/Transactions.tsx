@@ -32,7 +32,7 @@ const Transactions = ({
   return (
     <div className="w-full">
       <Heading heading="Transactions" />
-      <div className="mb-8">
+      <div className="mb-8 ml-3">
         <button
           onClick={() => setStatus("all")}
           className={`${baseClasses} ${
