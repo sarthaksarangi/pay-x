@@ -3,7 +3,7 @@ import { Card } from "@repo/ui/card";
 import { Heading } from "@repo/ui/heading";
 
 import { JSX, ReactNode, useMemo, useState } from "react";
-import { MyBarChart } from "../../../components/MyBarChart";
+import MyBarChart from "../../../components/MyBarChart";
 import { Transaction } from "../../../types/types";
 
 const Icon = ({

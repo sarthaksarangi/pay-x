@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bar } from "react-chartjs-2";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +25,7 @@ ChartJS.register(
   Filler
 );
 
-export const MyBarChart = ({
+const MyBarChart = ({
   transactions,
   activeTime,
 }: {
@@ -37,6 +38,17 @@ export const MyBarChart = ({
   }[];
   activeTime: string;
 }) => {
+  const [innerWidth, setInnerWidth] = useState<number>(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onResize = () => setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   let labels = [];
   let dataValues = [];
 
@@ -98,8 +110,7 @@ export const MyBarChart = ({
   const options: any = {
     responsive: true,
     maintainAspectRatio: true,
-    aspectRatio:
-      window.innerWidth < 640 ? 1.2 : window.innerWidth < 1024 ? 1.8 : 2.2,
+    aspectRatio: innerWidth < 640 ? 1.2 : innerWidth < 1024 ? 1.8 : 2.2,
     animation: {
       duration: 800,
       easing: "easeInOutQuart",
@@ -107,42 +118,38 @@ export const MyBarChart = ({
     plugins: {
       legend: {
         display: true,
-        position: window.innerWidth < 640 ? "bottom" : "top",
+        position: innerWidth < 640 ? "bottom" : "top",
         labels: {
-          boxWidth: window.innerWidth < 640 ? 12 : 15,
-          padding: window.innerWidth < 640 ? 8 : 15,
+          boxWidth: innerWidth < 640 ? 12 : 15,
+          padding: innerWidth < 640 ? 8 : 15,
           font: {
-            size:
-              window.innerWidth < 640 ? 10 : window.innerWidth < 1024 ? 11 : 12,
+            size: innerWidth < 640 ? 10 : innerWidth < 1024 ? 11 : 12,
           },
         },
       },
       title: {
         display: true,
         text:
-          window.innerWidth < 640
-            ? "Transactions"
-            : "Monthly Transactions Overview",
+          innerWidth < 640 ? "Transactions" : "Monthly Transactions Overview",
         font: {
-          size:
-            window.innerWidth < 640 ? 12 : window.innerWidth < 1024 ? 14 : 16,
+          size: innerWidth < 640 ? 12 : innerWidth < 1024 ? 14 : 16,
           weight: "bold",
         },
         padding: {
-          top: window.innerWidth < 640 ? 5 : 10,
-          bottom: window.innerWidth < 640 ? 10 : 15,
+          top: innerWidth < 640 ? 5 : 10,
+          bottom: innerWidth < 640 ? 10 : 15,
         },
       },
       tooltip: {
         enabled: true,
         mode: "index",
         intersect: false,
-        padding: window.innerWidth < 640 ? 8 : 12,
+        padding: innerWidth < 640 ? 8 : 12,
         titleFont: {
-          size: window.innerWidth < 640 ? 11 : 12,
+          size: innerWidth < 640 ? 11 : 12,
         },
         bodyFont: {
-          size: window.innerWidth < 640 ? 10 : 11,
+          size: innerWidth < 640 ? 10 : 11,
         },
       },
     },
@@ -151,17 +158,16 @@ export const MyBarChart = ({
         beginAtZero: true,
         ticks: {
           font: {
-            size:
-              window.innerWidth < 640 ? 9 : window.innerWidth < 1024 ? 10 : 11,
+            size: innerWidth < 640 ? 9 : innerWidth < 1024 ? 10 : 11,
           },
-          padding: window.innerWidth < 640 ? 4 : 8,
-          maxTicksLimit: window.innerWidth < 640 ? 5 : 8,
+          padding: innerWidth < 640 ? 4 : 8,
+          maxTicksLimit: innerWidth < 640 ? 5 : 8,
         },
         title: {
-          display: window.innerWidth >= 640,
+          display: innerWidth >= 640,
           text: "Amount (₹)",
           font: {
-            size: window.innerWidth < 1024 ? 11 : 12,
+            size: innerWidth < 1024 ? 11 : 12,
           },
         },
         grid: {
@@ -172,20 +178,19 @@ export const MyBarChart = ({
       x: {
         ticks: {
           font: {
-            size:
-              window.innerWidth < 640 ? 9 : window.innerWidth < 1024 ? 10 : 11,
+            size: innerWidth < 640 ? 9 : innerWidth < 1024 ? 10 : 11,
           },
-          maxRotation: window.innerWidth < 640 ? 45 : 0,
-          minRotation: window.innerWidth < 640 ? 45 : 0,
-          padding: window.innerWidth < 640 ? 4 : 8,
+          maxRotation: innerWidth < 640 ? 45 : 0,
+          minRotation: innerWidth < 640 ? 45 : 0,
+          padding: innerWidth < 640 ? 4 : 8,
           autoSkip: true,
-          maxTicksLimit: window.innerWidth < 640 ? 8 : 12,
+          maxTicksLimit: innerWidth < 640 ? 8 : 12,
         },
         title: {
-          display: window.innerWidth >= 640,
+          display: innerWidth >= 640,
           text: activeTime === "1W" || activeTime === "1M" ? "Date" : "Month",
           font: {
-            size: window.innerWidth < 1024 ? 11 : 12,
+            size: innerWidth < 1024 ? 11 : 12,
           },
         },
         grid: {
@@ -219,3 +224,5 @@ export const MyBarChart = ({
     </div>
   );
 };
+
+export default MyBarChart;
