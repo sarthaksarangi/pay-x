@@ -1,3 +1,7 @@
+"use client";
+import GlobalLoader from "../../components/GlobalLoader";
+
 export default function Loading() {
-  return <div className="p-4">Loading...</div>;
+  // Next will render this while route segments are loading (server components)
+  return <GlobalLoader />;
 }
