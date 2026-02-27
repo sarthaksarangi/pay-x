@@ -59,7 +59,6 @@ export default async function p2pTransfer(to: string, amount: number) {
       txn,
     };
   });
-  console.log("result", result);
   return {
     message: "Success",
   };

@@ -7,7 +7,6 @@ import P2pTransactions from "../../../components/P2pTransactions";
 async function getTransactions() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user || !session.user.id) {
-    console.log("No valid session");
     return [];
   }
   const transactions = await prisma.p2pTransfer.findMany({
@@ -31,7 +30,6 @@ async function getTransactions() {
       },
     },
   });
-  console.log(transactions);
   return transactions.map((t) => ({
     time: t.timestamp,
     amount: t.amount,

@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const { name, email, password, phone } = body;
     //Validate the required feilds
     if (!name || !email || !phone || !password) {
-      NextResponse.json(
+      return NextResponse.json(
         {
           message: "All fields are required",
         },

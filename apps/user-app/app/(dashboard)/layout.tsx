@@ -11,7 +11,7 @@ export default async function Layout({
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
-    redirect("/api/auth/signin");
+    redirect("/auth/signin");
   }
 
   return <ResponsiveSidebar>{children}</ResponsiveSidebar>;

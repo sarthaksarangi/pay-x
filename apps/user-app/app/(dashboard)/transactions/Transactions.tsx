@@ -21,7 +21,6 @@ const Transactions = ({
     }
     return txn.status === status;
   });
-  console.log(filterTransactions);
 
   const baseClasses =
     "inline-flex items-center shadow-sm transition duration-100 ease-in-out hover:shadow-md rounded-full px-6 py-2 text-sm font-semibold cursor-pointer mr-4";

@@ -12,8 +12,6 @@ export default function P2pTransactions({
     toUser: string;
   }[];
 }) {
-  console.log("Rendering transactions:", transactions);
-
   if (!transactions.length) {
     return (
       <Card title="Recent Transactions">

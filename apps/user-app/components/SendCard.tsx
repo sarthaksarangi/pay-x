@@ -29,14 +29,6 @@ export default function SendCard() {
       console.error("Transfer error:", error);
     } finally {
       setIsLoading(false);
-      console.log("Debug:", {
-        number,
-        amount,
-        isLoading,
-        numberCheck: !number,
-        amountCheck: !amount,
-        amountNumberCheck: Number(amount) <= 0,
-      });
     }
   };
 

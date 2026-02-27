@@ -34,10 +34,11 @@ export async function createOnRampTransaction(
         userId: Number(session.user.id),
       },
       data: {
-        locked: Number(amount) * 100,
+        locked: {
+          increment: Number(amount) * 100,
+        },
       },
     });
-    console.log(txnEntry, lockedBalUpdate);
 
     if (txnEntry && lockedBalUpdate) {
       return {
