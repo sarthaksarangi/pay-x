@@ -61,18 +61,23 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === "google" || account?.provider === "github") {
         try {
+          if (!user.email) {
+            // Require email for OAuth accounts
+            return false;
+          }
+
           const existingUser = await db.user.findFirst({
-            where: { email: user.email! },
+            where: { email: user.email },
           });
 
           if (!existingUser) {
             // Create new user for OAuth providers (email only, no phone required)
             const newUser = await db.user.create({
               data: {
-                name: user.name!,
-                email: user.email!,
-                number: "", // Empty string for OAuth users
-                password: "", // OAuth users don't need passwords
+                name: user.name ?? user.email ?? "User",
+                email: user.email,
+                // Do not set number here; leave it null so uniqueness is not violated
+                password: "", // OAuth users don't need passwords, keep empty string to satisfy schema
               },
             });
             user.id = newUser.id.toString();
